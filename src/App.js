@@ -1,25 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import './App.css';
+import {Component} from 'react'
+import EachItem from './componet.js'
+
+class App extends Component{
+  state = {details: [], rating: {}}
+
+  componentDidMount(){
+    this.getDetails()
+  }
+
+  getDetails = async () => {
+    let response = await fetch("https://fakestoreapi.com/products")
+    let data = await response.json();
+    let newData = data.rating
+    console.log(newData);
+
+    this.setState({details: data, rating: newData})
+  }
+
+  render(){
+    const {details, rating} = this.state
+    console.log(details);
+    console.log(rating);
+    return(
+      <div className='bg-container'>
+        <h1>Products</h1>
+        <div className='bg-container-1'>
+          {details.map(eachItem => <EachItem details={eachItem} key={eachItem.id}/>)}
+        </div>
+      </div>
+    )
+  }
 }
+
+
 
 export default App;
